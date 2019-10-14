@@ -1,0 +1,7 @@
+// make module visible
+--add-modules
+  org.assertj.core
+
+// "requires java.scripting"
+--add-reads
+  com.github.bredmold.jpms.service.impl=org.assertj.core

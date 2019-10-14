@@ -1,0 +1,9 @@
+plugins {
+    id 'org.beryx.jlink' version '2.16.0'
+}
+
+mainClassName = 'com.github.bredmold.jpms.service.impl.JpmsApplication'
+
+dependencies {
+    compile project(':service.api')
+}

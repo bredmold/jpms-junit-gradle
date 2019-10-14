@@ -1,0 +1,4 @@
+rootProject.name = 'jpms-junit-gradle'
+include 'service.api'
+include 'service.impl'
+

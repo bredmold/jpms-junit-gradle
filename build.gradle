@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.javamodularity:moduleplugin:1.6.0"
+    }
+}
+
+group 'com.github.bredmold'
+version '1.0-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: "org.javamodularity.moduleplugin"
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        versions = [
+                junit: '5.3.1'
+        ]
+    }
+
+    test {
+        useJUnitPlatform()
+
+        testLogging {
+            events 'PASSED', 'FAILED', 'SKIPPED'
+        }
+    }
+
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
+        testImplementation "org.junit.jupiter:junit-jupiter-params:${versions.junit}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+
+        testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+    }
+}
