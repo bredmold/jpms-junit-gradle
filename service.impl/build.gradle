@@ -4,6 +4,14 @@ plugins {
 
 mainClassName = 'com.github.bredmold.jpms.service.impl.JpmsApplication'
 
+task dockerBuild(type: Exec) {
+    group = 'build'
+    description = 'Create docker module'
+    dependsOn 'jlink'
+
+    commandLine 'docker', 'build', '.', '--tag', 'service.impl'
+}
+
 dependencies {
     compile project(':service.api')
 }
