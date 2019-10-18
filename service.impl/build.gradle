@@ -1,6 +1,8 @@
 plugins {
     id 'org.beryx.jlink' version '2.16.0'
+    id 'org.springframework.boot' version '2.1.9.RELEASE'
 }
+apply plugin: 'io.spring.dependency-management'
 
 mainClassName = 'com.github.bredmold.jpms.service.impl.JpmsApplication'
 
@@ -14,4 +16,35 @@ task dockerBuild(type: Exec) {
 
 dependencies {
     compile project(':service.api')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
+    // Pulling this in to get a version that declares a module name
+    implementation 'org.springframework.hateoas:spring-hateoas:1.0.0.RELEASE'
+
+    // Just some useful tools
+    implementation 'org.apache.commons:commons-lang3'
+
+    /*
+    Logging dependencies
+
+    slf4j and logback need to be bumped up to their latest (alpha) versions that are designed for JPMS
+     */
+    implementation "org.slf4j:slf4j-api:${versions.slf4j}"
+    implementation "org.slf4j:jul-to-slf4j:${versions.slf4j}"
+    implementation "ch.qos.logback:logback-classic:${versions.logback}"
+    implementation "ch.qos.logback:logback-core:${versions.logback}"
+    implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-to-slf4j:${versions.log4j}"
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        /*
+        jsonassert and one of its dependencies both try to declare classes in the org.json package.
+        This is a no-no the JPMS world, but there doesn't seem to be any effort underway to re-factor JPMS to
+        account for this.
+         */
+        exclude group: 'org.skyscreamer', module: 'jsonassert'
+    }
 }
